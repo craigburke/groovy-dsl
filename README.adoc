@@ -4,15 +4,17 @@ Presented by Craig Burke <craig@craigburke.com>
 
 == Slides
 
-* http://www.craigburke.com/practical-groovy-dsl/[Presentation Slides (HTML)]
+* http://www.craigburke.com/groovy-dsl/[Presentation Slides (HTML)]
 
 == Code
 
-* *danebot/run.groovy* - Dane Cook Twitter bot (needs twitter4j.properties)
-* *builder-support/builder.groovy* - BuilderSupport example
-* *doc-builder/run.groovy* - Document Builder example
+Examples found in the code folder:
+
+* *danebot* - Dane Cook Twitter bot (needs twitter4j.properties)
+* *builder-support* - BuilderSupport example
+* *doc-builder* - Document Builder example
 * *groovy* - Simple Groovy examples
-* *gorm/gorm.groovy* - Terrible GORM code to show closure delegation
+* *gorm* - Terrible GORM code to show closure delegation
 
 == See Also
 
