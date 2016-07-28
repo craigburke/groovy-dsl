@@ -1,8 +1,0 @@
-.asscache
-.gradle
-.idea
-classes
-build
-
-code/danebot/twitter4j.properties
-code/doc-builder/documents

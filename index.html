@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Practical and Stupidly Impractical Groovy DSLs</title><meta name="mobile-web-app-capable" content="yes"><link rel="stylesheet" type="text/css" href="styles/main.css" /></head><body><article class="deck"><section id="_practical_and_stupidly_impractical_groovy_dsls" data-bespoke-state="title"><h2>Practical and Stupidly Impractical Groovy DSLs</h2><p id="author">Craig Burke</p></section>
+<section id="_about_me"><h2>About Me</h2><ul class="build build-items"><li><span class="primary"><span class="icon"><i class="fa fa-university"></i></span> Groovy/Grails Developer at Carnegie Mellon</span></li><li><span class="primary"><span class="icon"><i class="fa fa-file-pdf-o"></i></span> Creator of the Groovy Document Builder</span></li><li><span class="primary"><span class="icon"><i class="fa fa-globe"></i></span> www.craigburke.com</span></li><li><span class="primary"><span class="icon"><i class="fa fa-twitter"></i></span> @craigburke1</span></li></ul></section>
+<section id="_what_is_a_dsl"><h2>What is a DSL?</h2><figure class="quote"><blockquote><p>A Domain Specific Language (DSL) is a computer programming language of <strong>limited expressiveness</strong> focused on a <strong>particular domain</strong>.</p></blockquote><figcaption>Martin Fowler</figcaption></figure></section>
+<section id="_what_is_a_dsl_2"><h2>What is a DSL?</h2><p>Makes use of the <strong>language and metaphors</strong> used by <strong>domain experts</strong></p></section>
+<section id="_example_gradle"><h2>Example (Gradle)</h2><pre class="source"><code data-lang="gradle" class="language-gradle prettyprint">apply plugin: 'groovy'
+
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  compile 'org.codehaus.groovy:groovy-all:2.4.4'
+  runtime 'org.postgresql:postgresql:9.4-1201-jdbc41'
+}</code></pre></section>
+<section id="_example_sql"><h2>Example (SQL)</h2><pre class="source"><code data-lang="sql" class="language-sql prettyprint">INSERT INTO EMPLOYEE (ID, NAME) VALUES (1, 'Craig Burkee');
+
+UPDATE EMPLOYEE SET NAME = 'Craig Burke' WHERE ID = 1;
+
+SELECT ID, NAME FROM EMPLOYEE;
+
+DELETE FROM EMPLOYEE WHERE ID = 1;</code></pre></section>
+<section id="_example_css"><h2>Example (CSS)</h2><pre class="source"><code data-lang="css" class="language-css prettyprint">p {
+  font-size: 12px;
+  color: #B41F1F;
+}
+
+div.content {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #000000;
+}</code></pre></section>
+<section id="_groovy_features"><h2>Groovy Features</h2><ul class="build build-items"><li><span class="primary">Simple Syntax (Less Noise)</span></li><li><span class="primary">Scripting Support</span></li><li><span class="primary">Operator Overloading</span></li><li><span class="primary">Meta-Programming</span></li></ul></section>
+<section id="_simple_syntax"><h2>Simple Syntax</h2><figure class="listing"><figcaption>Maps and lists</figcaption><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">def map = [language: 'Groovy']
+def list = ['foo', 'bar']</code></pre></figure></section>
+<section id="_simple_syntax_2"><h2>Simple Syntax</h2><figure class="listing"><figcaption>Command chaining and optional parenthesis</figcaption><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">say hello to 'Craig'
+
+// say(hello).to('Craig')</code></pre></figure></section>
+<section id="_simple_syntax_3"><h2>Simple Syntax</h2><figure class="listing"><figcaption>Named arguments</figcaption><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">class Note {
+  static from(Map args, String name) {
+    println "${name} said ${args.message}"
+  }
+}
+
+Note.from 'Craig Burke', message: 'Hey, how are you?'</code></pre></figure></section>
+<section id="_scripting_support"><h2>Scripting Support</h2><figure class="listing"><figcaption>Java code to print a String</figcaption><pre class="source"><code data-lang="java" class="language-java prettyprint">public class ScriptClass {
+
+  public static void main(String[] args) {
+    System.out.println("Hello World");
+  }
+
+}</code></pre></figure>
+<figure class="listing"><figcaption>Equivalent Groovy Code</figcaption><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">println 'Hello World'</code></pre></figure></section>
+<section id="_operator_overloading"><h2>Operator Overloading</h2><table class="tableblock frame-all grid-all operators" style="width: 50%;">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a + b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.plus(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a - b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.minus(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a * b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.multiply(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a ** b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.power(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a / b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.div(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a % b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.mod(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a | b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.or(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a &amp; b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.and(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a ^ b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.xor(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a or a</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.next()</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a-- or --a</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.previous()</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a &lt;&lt; b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.leftShift(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a &gt;&gt; b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.rightShift(b)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a &lt;&#8658; b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a.compareTo(b)</p></td>
+</tr>
+</tbody>
+</table></section>
+<section id="_getters_and_setters"><h2 class="build build-items">Getters and Setters</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">class Person {
+  String name
+}
+Person person = new Person()</code></pre>
+<pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">person.name = 'Craig'
+// person.setName('Craig')</code></pre>
+<pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">println person.name
+// println person.getName()</code></pre>
+<pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">person.nickName = person.name
+// person.setNickName(person.getName())</code></pre></section>
+<section id="_dynamic_properties"><h2>Dynamic Properties</h2><figure class="listing"><figcaption>Extending the Number class</figcaption><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">Number.metaClass.getDollars = { delegate as BigDecimal }
+
+Number.metaClass.getProperty = { String name -&gt;
+  def rates = [euros: 1.1f, pesos: 0.063f]
+  delegate * (rates[name] as BigDecimal)
+}</code></pre></figure>
+<figure class="listing"><figcaption>Adding different currencies together</figcaption><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">def total = 20.dollars + 40.euros + 200.pesos
+assert total == 76.60</code></pre></figure></section>
+<section id="_dynamic_methods"><h2>Dynamic Methods</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">class Person {
+  def methodMissing(String name, args) {
+    if (name.startsWith('say')) {
+      String message = (name - 'say').trim()
+      println message
+    }
+  }
+}</code></pre>
+<figure class="listing"><figcaption>Trying out our dynamic method</figcaption><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">Person you = new Person()
+you.sayHello()
+you."say Craig is Awesome"()</code></pre></figure></section>
+<section id="_closure_delegation"><h2>Closure Delegation</h2><figure class="listing"><figcaption>Defining a simple closure</figcaption><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">Closure myClosure = {
+  name = 'Craig'
+  printName()
+}</code></pre></figure>
+<figure class="listing"><figcaption>Methods and properties set to resolve to a NamePrinter object</figcaption><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">class NamePrinter {
+  String name
+
+  void printName() {
+    println "My Name is ${name}!!!"
+  }
+}
+
+myClosure.delegate = new NamePrinter()
+myClosure.resolveStrategy = Closure.DELEGATE_FIRST
+myClosure()</code></pre></figure></section>
+<section id="_let_s_get_serious"><h2 class="build build-items">Let&#8217;s Get Serious</h2><figure class="image build dane"><img src="images/dane-cook.jpg" alt="dane cook"></figure></section>
+<section id="_who_is_dane_cook"><h2>Who is Dane Cook?</h2><ul class="build build-items"><li><span class="primary"><span class="icon"><i class="fa fa-thumbs-o-up"></i></span> Comedy Albums Have Sold Millions <span class="image retaliation"><img src="images/retaliation.jpg" alt="retaliation"></span></span></li><li><span class="primary"><span class="icon"><i class="fa fa-thumbs-o-up"></i></span> Voice of Dusty Crophopper from Planes <span class="image dusty"><img src="images/dusty-planes.png" alt="dusty planes"></span></span></li><li><span class="primary"><span class="icon"><i class="fa fa-thumbs-o-up"></i></span> Estimated Net Worth of $30 million</span></li><li><span class="primary"><span class="icon"><i class="fa fa-thumbs-o-up"></i></span> Rides Around in a Sweet Lamborghini</span></li></ul></section>
+<section id="__twitter_smackdown"><figure class="image tweet"><img src="images/twitter.png" alt="twitter"></figure></section>
+<section id="_a_proposed_dsl"><h2>A Proposed DSL</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">'Dane Cook Sucks'.watch {
+    tweet 'Hey @craigburke1, somebody said this:' &lt;&lt; it
+    tweet "LEAVE DANE ALONE, @${it.user}!!!"
+}</code></pre></section>
+<section id="_generating_documents_in_java"><h2>Generating Documents In Java</h2><figure class="image"><img src="images/car.gif" alt="car"></figure></section>
+<section id="_groovy_document_builder"><h2>Groovy Document Builder</h2><ul class="build build-items"><li><span class="primary">Simple and Readable DSL for Document Creation</span></li><li><span class="primary">Use Same Code for Word or Pdf Documents</span></li><li><span class="primary">Shouldn&#8217;t Require Knowledge of a Complex Library</span></li></ul></section>
+<section id="_early_dsl"><h2>Early DSL</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">builder.generate {
+  paragraph 'OMFG! Look at the cat!'
+  picture kitty, [name: 'kitty.png', width: 354, height: 290]
+  paragraph 'That cat is amazing!!!'
+}</code></pre></section>
+<section id="_simple_implementation"><h2>Simple Implementation</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">class DocumentBuilder {
+  private File file
+
+  DocumentBuilder(File file) {
+    this.file = file
+  }
+
+  void generate(Closure builder) {
+    builder.delegate = this
+    builder()
+  }
+
+  abstract void paragraph(String text)
+  abstract void picture(Map params = [:], byte[] data)
+}</code></pre></section>
+<section id="_things_get_more_complicated"><h2>Things Get More Complicated</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">builder.generate {
+  paragraph 'Check out this table'
+
+  table {
+    row {
+      cell 'First Name'
+      cell 'Last Name'
+    }
+
+    row {
+      cell 'Craig'
+      cell 'Burke'
+    }
+  }
+}</code></pre></section>
+<section id="_builder_support"><h2>Builder Support</h2><ul class="build build-items"><li><span class="primary">Closure Delegation</span></li><li><span class="primary">BuilderSupport</span></li><li><span class="primary">FactoryBuilderSupport</span></li></ul></section>
+<section id="_buildersupport"><h2>BuilderSupport</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">class MyBuilder extends BuilderSupport {
+  def createNode(name) { /* TODO */ }
+  def createNode(name, value) { /* TODO */ }
+  def createNode(name, Map attributes) { /* TODO */ }
+  def createNode(name, Map attributes, value) { /* TODO */ }
+  void setParent(parent, child) { /* TODO */ }
+  void nodeCompleted(parent, node) { /* TODO */ }
+}</code></pre></section>
+<section id="_factorybuildersupport"><h2>FactoryBuilderSupport</h2><p class="subheading">Now We&#8217;re Talking</p></section>
+<section id="_gorm_class"><h2>GORM class</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">class User {
+  String firstName
+  String lastName
+  Date birthDate
+
+  static constraints = {
+    firstName blank: false
+    lastName blank: false
+    birthDate nullable: false
+  }
+
+}</code></pre></section>
+<section id="_explicit_types"><h2>Explicit Types</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">class User {
+  String firstName
+  String lastName
+  Date birthDate
+
+  static Closure constraints = {
+    firstName([blank:false])
+    lastName([blank:false])
+    birthDate([nullable:false])
+  }
+
+}</code></pre></section>
+<section id="_take_it_even_further"><h2>Take It Even Further</h2><pre class="source"><code data-lang="groovy" class="language-groovy prettyprint">class User {
+  String firstName
+  String lastName
+  Date birthDate
+
+  static Closure constraints = {
+    Map nameConstrants = [blank:false]
+
+    ['firstName', 'lastName'].each {
+      "${it}"(nameContraints)
+    }
+
+    delegate.birthDate([nullable:false])
+  }
+
+}</code></pre></section>
+<section id="_resources"><h2>Resources</h2><p class="subheading">Books</p>
+<ul class="resources"><li><span class="primary"><span class="icon"><i class="fa fa-book"></i></span> Domain-Specific Languages (Martin Fowler)</span><ul><li><span class="primary"><a href="http://www.amazon.com/Domain-Specific-Languages-Addison-Wesley-Signature-Series/dp/0321712943" class="bare">http://www.amazon.com/Domain-Specific-Languages-Addison-Wesley-Signature-Series/dp/0321712943</a></span></li></ul></li><li><span class="primary"><span class="icon"><i class="fa fa-book"></i></span> Groovy for Domain-Specific Languages (Fergal Dearle)</span><ul><li><span class="primary"><a href="http://www.amazon.com/Groovy-Domain-Specific-Languages-Fergal-Dearle/dp/184719690X" class="bare">http://www.amazon.com/Groovy-Domain-Specific-Languages-Fergal-Dearle/dp/184719690X</a></span></li></ul></li></ul>
+<p class="subheading">Presentations</p>
+<ul class="resources"><li><span class="primary"><span class="icon"><i class="fa fa-bullhorn"></i></span> Groovy Domain Specific Languages</span><ul><li><span class="primary"><a href="http://www.infoq.com/presentations/groovy-dsl-mars" class="bare">http://www.infoq.com/presentations/groovy-dsl-mars</a></span></li></ul></li><li><span class="primary"><span class="icon"><i class="fa fa-bullhorn"></i></span> DSL&#8217;ing your Groovy</span><ul><li><span class="primary"><a href="https://www.youtube.com/watch?v=SfrEThI_m7g" class="bare">https://www.youtube.com/watch?v=SfrEThI_m7g</a></span></li></ul></li></ul>
+<p class="subheading">Links</p>
+<ul class="resources"><li><span class="primary"><span class="icon"><i class="fa fa-globe"></i></span> Domain-Specific Languages (Groovy Docs)</span><ul><li><span class="primary"><a href="http://docs.groovy-lang.org/docs/latest/html/documentation/core-domain-specific-languages.html" class="bare">http://docs.groovy-lang.org/docs/latest/html/documentation/core-domain-specific-languages.html</a></span></li></ul></li></ul></section>
+<section id="_thank_you"><h2>Thank You</h2><p><span class="image"><img src="images/parrot.gif" alt="parrot"></span></p></section></article><script src="javascripts/main.js" type="application/javascript"></script>
+</body></html>
