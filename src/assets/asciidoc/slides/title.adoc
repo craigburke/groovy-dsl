@@ -1,0 +1,5 @@
+[bespoke-state="title"]
+== Practical and Stupidly Impractical Groovy DSLs
+
+[[author]]
+Craig Burke

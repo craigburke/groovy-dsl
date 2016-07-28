@@ -1,0 +1,28 @@
+[%build]
+== Let's Get Serious
+
+[.build.dane]
+image::dane-cook.jpg[]
+
+== Who is Dane Cook?
+
+[%build]
+* icon:thumbs-o-up[] Comedy Albums Have Sold Millions image:retaliation.jpg[role='retaliation']
+* icon:thumbs-o-up[] Voice of Dusty Crophopper from Planes image:dusty-planes.png[role='dusty']
+* icon:thumbs-o-up[] Estimated Net Worth of $30 million
+* icon:thumbs-o-up[] Rides Around in a Sweet Lamborghini
+
+== !Twitter Smackdown#
+
+[.tweet]
+image::twitter.png[]
+
+== A Proposed DSL
+
+[source,groovy]
+----
+'Dane Cook Sucks'.watch {
+    tweet 'Hey @craigburke1, somebody said this:' << it
+    tweet "LEAVE DANE ALONE, @${it.user}!!!"
+}
+----
